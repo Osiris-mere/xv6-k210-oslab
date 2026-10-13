@@ -333,7 +333,12 @@ uint64
 sys_getcwd(void)
 {
   uint64 addr;
-  if (argaddr(0, &addr) < 0)
+  int size;
+
+  if (argaddr(0, &addr) < 0 || argint(1, &size) < 0)
+    return -1;
+
+  if (size <= 0)
     return -1;
 
   struct dirent *de = myproc()->cwd;
@@ -341,28 +346,39 @@ sys_getcwd(void)
   char *s;
   int len;
 
-  if (de->parent == NULL) {
-    s = "/";
+  if (de == 0)
+    return -1;
+
+  if (de->parent == 0) {
+    path[0] = '/';
+    path[1] = '\0';
+    s = path;
   } else {
     s = path + FAT32_MAX_PATH - 1;
     *s = '\0';
-    while (de->parent) {
+
+    while (de->parent != 0) {
       len = strlen(de->filename);
-      s -= len;
-      if (s <= path)          // can't reach root "/"
+
+      if (s - path < len + 1)
         return -1;
-      strncpy(s, de->filename, len);
+
+      s -= len;
+      memmove(s, de->filename, len);
       *--s = '/';
       de = de->parent;
     }
   }
 
-  // if (copyout(myproc()->pagetable, addr, s, strlen(s) + 1) < 0)
-  if (copyout2(addr, s, strlen(s) + 1) < 0)
-    return -1;
-  
-  return 0;
+  len = strlen(s) + 1;
 
+  if (len > size)
+    return -1;
+
+  if (copyout2(addr, s, len) < 0)
+    return -1;
+
+  return addr;
 }
 
 // Is the directory dp empty except for "." and ".." ?

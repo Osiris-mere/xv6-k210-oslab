@@ -8,9 +8,16 @@ print "#include \"kernel/include/sysnum.h\"\n";
 
 sub entry {
     my $name = shift;
+    my $sysname = $name;
+
+    # User function names differ from kernel syscall-number names.
+    if ($name eq "brk" || $name eq "mmap" || $name eq "munmap") {
+        $sysname = "linux_" . $name;
+    }
+
     print ".global $name\n";
     print "${name}:\n";
-    print " li a7, SYS_${name}\n";
+    print " li a7, SYS_${sysname}\n";
     print " ecall\n";
     print " ret\n";
 }
@@ -41,3 +48,9 @@ entry("remove");
 entry("trace");
 entry("sysinfo");
 entry("rename");
+
+entry("times");
+entry("uname");
+entry("brk");
+entry("mmap");
+entry("munmap");

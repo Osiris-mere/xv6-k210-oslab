@@ -73,7 +73,7 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb -g
+CFLAGS = -Wall -Werror -Wno-error=infinite-recursion -O -fno-omit-frame-pointer -ggdb -g
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
@@ -106,6 +106,11 @@ $T/kernel: $(OBJS) $(linker) $U/initcode
 	@$(OBJDUMP) -t $T/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $T/kernel.sym
   
 build: $T/kernel userprogs
+
+all:
+	$(MAKE) platform=qemu build
+	cp target/kernel kernel-qemu
+	cp bootloader/SBI/sbi-qemu sbi-qemu
 
 # Compile RustSBI
 RUSTSBI:
@@ -201,6 +206,8 @@ UPROGS=\
 	$U/_rm\
 	$U/_wc\
 	$U/_test\
+	$U/_test_part1\
+        $U/_test_part2\
 	$U/_usertests\
 	$U/_strace\
 	$U/_mv\

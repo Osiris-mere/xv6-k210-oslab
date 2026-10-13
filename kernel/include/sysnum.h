@@ -18,7 +18,7 @@
 #define SYS_uptime      14
 #define SYS_open        15
 #define SYS_write       16
-#define SYS_remove      17
+#define SYS_remove      27
 #define SYS_trace       18
 #define SYS_sysinfo     19
 #define SYS_mkdir       20
@@ -29,4 +29,22 @@
 #define SYS_getcwd      25
 #define SYS_rename      26
 
+
+/* New xv6 system calls */
+#define SYS_shutdown    28
+#define SYS_times       29
+#define SYS_uname       30
+
+/* Linux RISC-V ABI numbers used by precompiled tests */
+#define SYS_linux_getcwd  17
+#define SYS_linux_close   57
+#define SYS_linux_read    63
+#define SYS_linux_write   64
+#define SYS_linux_exit    93
+#define SYS_linux_times   153
+#define SYS_linux_uname   160
+#define SYS_linux_getpid  172
+#define SYS_linux_brk     214
+#define SYS_linux_munmap  215
+#define SYS_linux_mmap    222
 #endif

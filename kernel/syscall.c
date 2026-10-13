@@ -116,6 +116,13 @@ extern uint64 sys_remove(void);
 extern uint64 sys_trace(void);
 extern uint64 sys_sysinfo(void);
 extern uint64 sys_rename(void);
+extern uint64 sys_times(void);
+extern uint64 sys_uname(void);
+extern uint64 sys_shutdown(void);
+extern uint64 sys_linux_brk(void);
+extern uint64 sys_linux_mmap(void);
+extern uint64 sys_linux_munmap(void);
+
 
 static uint64 (*syscalls[])(void) = {
   [SYS_fork]        sys_fork,
@@ -144,6 +151,21 @@ static uint64 (*syscalls[])(void) = {
   [SYS_trace]       sys_trace,
   [SYS_sysinfo]     sys_sysinfo,
   [SYS_rename]      sys_rename,
+  [SYS_linux_getcwd]  sys_getcwd,
+  [SYS_linux_close]   sys_close,
+  [SYS_linux_read]    sys_read,
+  [SYS_linux_write]   sys_write,
+  [SYS_linux_exit]    sys_exit,
+  [SYS_linux_times]   sys_times,
+  [SYS_linux_uname]   sys_uname,
+  [SYS_linux_getpid]  sys_getpid,
+  [SYS_linux_brk]     sys_linux_brk,
+  [SYS_linux_mmap]    sys_linux_mmap,
+  [SYS_linux_munmap]  sys_linux_munmap,
+
+  [SYS_shutdown]      sys_shutdown,
+  [SYS_times]         sys_times,
+  [SYS_uname]         sys_uname,
 };
 
 static char *sysnames[] = {
@@ -173,6 +195,21 @@ static char *sysnames[] = {
   [SYS_trace]       "trace",
   [SYS_sysinfo]     "sysinfo",
   [SYS_rename]      "rename",
+  [SYS_linux_getcwd]  "getcwd",
+  [SYS_linux_close]   "close",
+  [SYS_linux_read]    "read",
+  [SYS_linux_write]   "write",
+  [SYS_linux_exit]    "exit",
+  [SYS_linux_times]   "times",
+  [SYS_linux_uname]   "uname",
+  [SYS_linux_getpid]  "getpid",
+  [SYS_linux_brk]     "brk",
+  [SYS_linux_mmap]    "mmap",
+  [SYS_linux_munmap]  "munmap",
+
+  [SYS_shutdown]      "shutdown",
+  [SYS_times]         "times",
+  [SYS_uname]         "uname",
 };
 
 void

@@ -28,7 +28,7 @@ int uptime(void);
 int test_proc(int);
 int dev(int, short, short);
 int readdir(int fd, struct stat*);
-int getcwd(char *buf);
+int getcwd(char *buf, int size);
 int remove(char *filename);
 int trace(int mask);
 int sysinfo(struct sysinfo *);
@@ -51,3 +51,10 @@ void free(void*);
 int atoi(const char*);
 int memcmp(const void *, const void *, uint);
 void *memcpy(void *, const void *, uint);
+
+int times(void *buf);
+int uname(void *buf);
+/* Part 2: Linux-compatible memory syscalls */
+uint64 brk(uint64 addr);
+void *mmap(void *addr, uint64 len, int prot, int flags, int fd, uint64 offset);
+int munmap(void *addr, uint64 len);
